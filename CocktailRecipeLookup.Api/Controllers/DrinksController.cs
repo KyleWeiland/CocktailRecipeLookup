@@ -1,7 +1,9 @@
 ﻿using CocktailRecipeLookup.Api.Models;
+using CocktailRecipeLookup.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Xml.Linq;
 
 namespace CocktailRecipeLookup.Api.Controllers
 {
@@ -9,28 +11,19 @@ namespace CocktailRecipeLookup.Api.Controllers
     [Route("api/[controller]")]
     public class DrinksController : ControllerBase
     {
-        private readonly HttpClient _httpClient;
+        private readonly IDrinksService _drinksService;
 
-        public DrinksController()
+        public DrinksController(IDrinksService drinksService)
         {
-            _httpClient = new HttpClient();
+            _drinksService = drinksService;
         }
 
-        [HttpGet("search")]
-        public async Task<IActionResult> SearchDrinks(string query)
+        [HttpGet("ByName/{name}")]
+        public async Task<IActionResult> GetDrinksByName(string name)
         {
-            var apiUrl = $"YOUR_NINJAS_COCKTAIL_API_ENDPOINT_HERE?search={query}";
-            var response = await _httpClient.GetAsync(apiUrl);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                return BadRequest("Error fetching drinks.");
-            }
-
-            var content = await response.Content.ReadAsStringAsync();
-            var drinks = JsonConvert.DeserializeObject<List<Drink>>(content); // Adjust based on actual API response structure
-
-            return Ok(drinks);
+            var drinks = await _drinksService.GetDrinksByNameAsync(name);
+            if (drinks.Count.Equals(0)) return NotFound();
+            else return Ok(drinks);
         }
     }
 }
