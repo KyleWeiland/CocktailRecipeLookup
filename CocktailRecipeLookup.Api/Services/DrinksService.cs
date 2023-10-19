@@ -21,5 +21,19 @@ namespace CocktailRecipeLookup.Api.Services
             var drinks = JsonConvert.DeserializeObject<List<Drink>>(response);
             return drinks;
         }
+
+        public async Task<List<Drink>> GetDrinksByIngredientsAsync(List<string> ingredients)
+        {
+            _httpClient.DefaultRequestHeaders.Add("X-Api-Key", _apiKey);
+            var combined = "";
+            foreach (var i in ingredients)
+            {
+                combined += i + ",";
+            }
+            combined = combined.Substring(0, combined.Length - 1);
+            var response = await _httpClient.GetStringAsync($"https://api.api-ninjas.com/v1/cocktail?ingredients={combined}");
+            var drinks = JsonConvert.DeserializeObject<List<Drink>>(response);
+            return drinks;
+        }
     }
 }

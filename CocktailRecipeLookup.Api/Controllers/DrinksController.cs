@@ -26,7 +26,7 @@ namespace CocktailRecipeLookup.Api.Controllers
             else return Ok(drinks);
         }
 
-        [HttpGet("ByIngredients")]
+        [HttpPost("ByIngredients")]
         public async Task<IActionResult> GetDrinksByIngredients(List<string> ingredients)
         {
             var drinks = await _drinksService.GetDrinksByIngredientsAsync(ingredients);
