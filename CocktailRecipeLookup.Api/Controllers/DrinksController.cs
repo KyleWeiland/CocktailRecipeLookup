@@ -25,6 +25,14 @@ namespace CocktailRecipeLookup.Api.Controllers
             if (drinks.Count.Equals(0)) return NotFound();
             else return Ok(drinks);
         }
+
+        [HttpPost("ByIngredients")]
+        public async Task<IActionResult> GetDrinksByIngredients(List<string> ingredients)
+        {
+            var drinks = await _drinksService.GetDrinksByIngredientsAsync(ingredients);
+            if (drinks.Count.Equals(0)) return NotFound();
+            else return Ok(drinks);
+        }
     }
 }
 
