@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const drinksApi = axios.create({
-    baseURL: 'https://localhost:7033/api/',
+    baseURL: 'http://drink-api.us-east-1.elasticbeanstalk.com/api/',
     headers: {
         'Content-Type': 'application/json'
     }
