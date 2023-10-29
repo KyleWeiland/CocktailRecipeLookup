@@ -3,7 +3,7 @@ import CocktailSearch from "./CocktailSearch";
 function App() {
   return (
     <div>
-      <h1>Welcome to Cocktail Finder</h1>
+      <h1>Welcome to Cocktail Finder v3</h1>
       <CocktailSearch></CocktailSearch>
     </div>
   );

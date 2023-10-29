@@ -7,7 +7,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("https://d1q5we2qgcknqz.cloudfront.net/") // This is the default port for Create React App
+        builder.WithOrigins("http://d1q5we2qgcknqz.cloudfront.net/") // This is the default port for Create React App
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
@@ -30,7 +30,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//if (!app.Environment.IsDevelopment())
+//{
+//    app.UseHsts();
+//}
+
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
