@@ -1,0 +1,39 @@
+name: Deploy .NET to Elastic Beanstalk
+
+on:
+  pull_request:
+    branches:
+      - main # Set to your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0' # Set to your .NET version
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --configuration Release
+    
+    - name: Publish
+      run: dotnet publish -c Release -o ./publish
+    
+    - name: Deploy to Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v18
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: us-east-1 # Set to your AWS region
+        application_name: my-dotnet-app
+        environment_name: My-dotnet-app-env
+        version_label: ${{ github.run_id }}
+        deployment_package: ./publish
