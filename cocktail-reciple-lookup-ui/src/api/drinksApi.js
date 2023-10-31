@@ -4,7 +4,6 @@ const drinksApi = axios.create({
     baseURL: 'http://drink-api.us-east-1.elasticbeanstalk.com/api/',
     headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
     }
 });
 
