@@ -28,7 +28,13 @@ jobs:
     
     - name: Publish
       run: dotnet publish -c Release -o ./publish
-    
+
+    - name: Install Zip
+      run: sudo apt-get install zip
+
+    - name: Zip the application
+      run: zip -r publish.zip ./publish
+
     - name: Deploy to Elastic Beanstalk
       uses: einaregilsson/beanstalk-deploy@v18
       with:
@@ -38,4 +44,4 @@ jobs:
         application_name: my-dotnet-app
         environment_name: My-dotnet-app-env
         version_label: ${{ github.run_id }}
-        deployment_package: ./publish
+        deployment_package: publish.zip
