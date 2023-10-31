@@ -21,9 +21,17 @@ namespace CocktailRecipeLookup.Api.Controllers
         [HttpGet("ByName/{name}")]
         public async Task<IActionResult> GetDrinksByName(string name)
         {
-            var drinks = await _drinksService.GetDrinksByNameAsync(name);
-            if (drinks.Count.Equals(0)) return NotFound();
-            else return Ok(drinks);
+            try
+            {
+                var drinks = await _drinksService.GetDrinksByNameAsync(name);
+                if (drinks.Count.Equals(0)) return NotFound();
+                else return Ok(drinks);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+            
         }
 
         [HttpPost("ByIngredients")]
