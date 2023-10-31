@@ -7,7 +7,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin() //WithOrigins("http://d1q5we2qgcknqz.cloudfront.net/") // This is the default port for Create React App
+        builder.WithOrigins("http://d1q5we2qgcknqz.cloudfront.net", "http://cloudfront.net", "http://elasticbeanstalk.com") // This is the default port for Create React App
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
