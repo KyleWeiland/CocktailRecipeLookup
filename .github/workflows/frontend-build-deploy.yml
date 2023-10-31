@@ -22,6 +22,7 @@ jobs:
     
     - name: Install dependencies
       run: npm install
+      working-directory: ./cocktail-reciple-lookup-ui
     
     - name: Build
       run: npm run build
