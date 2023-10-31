@@ -10,6 +10,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cocktail-reciple-lookup-ui
     
     steps:
     - name: Checkout code
@@ -22,7 +25,6 @@ jobs:
     
     - name: Install dependencies
       run: npm install
-      working-directory: ./cocktail-reciple-lookup-ui
     
     - name: Build
       run: npm run build
