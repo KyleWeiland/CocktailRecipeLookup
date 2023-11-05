@@ -1,3 +1,5 @@
+using Amazon.SimpleSystemsManagement.Model;
+using Amazon.SimpleSystemsManagement;
 using CocktailRecipeLookup.Api.Models;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
@@ -7,17 +9,16 @@ namespace CocktailRecipeLookup.Api.Services
     public class DrinksService : IDrinksService
     {
         private readonly HttpClient _httpClient;
-        private readonly string? _apiKey;
 
         public DrinksService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _apiKey = configuration["CocktailsApiKey"];
         }
 
         public async Task<List<Drink>> GetDrinksByNameAsync(string name)
         {
-            _httpClient.DefaultRequestHeaders.Add("X-Api-Key", _apiKey);
+            var apiKey = await GetApiKeyAsync();
+            _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
             var response = await _httpClient.GetStringAsync($"https://api.api-ninjas.com/v1/cocktail?name={name}");
             var drinks = JsonConvert.DeserializeObject<List<Drink>>(response);
             ConvertInstructions(drinks);
@@ -26,7 +27,8 @@ namespace CocktailRecipeLookup.Api.Services
 
         public async Task<List<Drink>> GetDrinksByIngredientsAsync(List<string> ingredients)
         {
-            _httpClient.DefaultRequestHeaders.Add("X-Api-Key", _apiKey);
+            var apiKey = await GetApiKeyAsync();
+            _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
             var combined = "";
             foreach (var i in ingredients)
             {
@@ -36,6 +38,14 @@ namespace CocktailRecipeLookup.Api.Services
             var response = await _httpClient.GetStringAsync($"https://api.api-ninjas.com/v1/cocktail?ingredients={combined}");
             var drinks = JsonConvert.DeserializeObject<List<Drink>>(response);
             return drinks;
+        }
+
+        private async Task<string >GetApiKeyAsync()
+        {
+            using var ssmClient = new AmazonSimpleSystemsManagementClient(Amazon.RegionEndpoint.USEast1);
+            var request = new GetParameterRequest { Name = "api-ninja-key", WithDecryption = true };
+            var response = await ssmClient.GetParameterAsync(request);
+            return response.Parameter.Value;
         }
 
         private void ConvertInstructions(List<Drink> drinks)
