@@ -2,12 +2,11 @@ using CocktailRecipeLookup.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("https://kyle-weiland.com/") // This is the default port for Create React App
+        builder.WithOrigins("https://kyle-weiland.com")
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
@@ -15,7 +14,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IDrinksService, DrinksService>();
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,7 +21,6 @@ var app = builder.Build();
 
 app.UseCors();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -34,7 +31,6 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
-
 
 app.UseHttpsRedirection();
 
