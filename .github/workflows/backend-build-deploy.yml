@@ -1,11 +1,13 @@
 name: Deploy .NET to Elastic Beanstalk
 
 on:
-  pull_request:
-    types:
-      - closed
+  workflow_dispatch:
+  push:
     branches:
-      - main # Set to your default branch
+      - main
+    paths:
+      - CocktailRecipeLookup.Api
+      - .github/workflows/backend-build-deploy.yml
 
 jobs:
   build-and-deploy:
