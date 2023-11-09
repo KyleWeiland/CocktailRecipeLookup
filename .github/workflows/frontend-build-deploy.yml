@@ -1,11 +1,13 @@
 name: Deploy React to S3 and CloudFront
 
 on:
-  pull_request:
-    types:
-      - closed
+  workflow_dispatch:
+  push:
     branches:
       - main
+    paths:
+      - cocktail-reciple-lookup-ui
+      - .github/workflows/frontend-build-deploy.yml
 
 jobs:
   build-and-deploy:
