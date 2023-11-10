@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - CocktailRecipeLookup.Api
-      - .github/workflows/backend-build-deploy.yml
+      - 'CocktailRecipeLookup.Api/**'
+      - '.github/workflows/backend-build-deploy.yml'
 
 jobs:
   build-and-deploy:
