@@ -25,7 +25,7 @@ namespace CocktailRecipeLookup.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest($"Exception: {e.Message ?? ""},\tInner Exception: {e.InnerException?.Message ?? ""}");
             }
             
         }
@@ -36,6 +36,12 @@ namespace CocktailRecipeLookup.Api.Controllers
             var drinks = await _drinksService.GetDrinksByIngredientsAsync(ingredients);
             if (drinks.Count.Equals(0)) return NotFound();
             else return Ok(drinks);
+        }
+
+        [HttpGet("Test")]
+        public IActionResult Test()
+        {
+            return Ok("Success!");
         }
     }
 }
