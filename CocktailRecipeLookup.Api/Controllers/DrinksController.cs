@@ -1,9 +1,5 @@
-﻿using CocktailRecipeLookup.Api.Models;
-using CocktailRecipeLookup.Api.Services;
-using Microsoft.AspNetCore.Http;
+﻿using CocktailRecipeLookup.Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Xml.Linq;
 
 namespace CocktailRecipeLookup.Api.Controllers
 {
