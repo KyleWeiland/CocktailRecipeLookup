@@ -5,7 +5,7 @@ function App() {
     <div>
       <h1>Welcome to Cocktail Finder v5</h1>
       <CocktailSearch></CocktailSearch>
-      <h6>Now with pipelines!</h6>
+      <h6>Now with pipelines! </h6>
     </div>
   );
 }

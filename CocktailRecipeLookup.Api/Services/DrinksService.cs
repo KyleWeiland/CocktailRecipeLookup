@@ -50,7 +50,7 @@ namespace CocktailRecipeLookup.Api.Services
 
         private void ConvertInstructions(List<Drink> drinks)
         {
-            // Skip if none of the ingredients have cl
+            // Skip if none of the ingredients have cl 
             if (!drinks.Any(d => d.Ingredients.Any(i => i.Contains(" cl ")))) return;
 
             foreach (var d in drinks)
