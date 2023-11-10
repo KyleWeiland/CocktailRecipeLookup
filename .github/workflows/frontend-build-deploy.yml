@@ -6,8 +6,8 @@ on:
     branches:
       - main
     paths:
-      - cocktail-reciple-lookup-ui
-      - .github/workflows/frontend-build-deploy.yml
+      - 'cocktail-reciple-lookup-ui/**'
+      - '.github/workflows/frontend-build-deploy.yml'
 
 jobs:
   build-and-deploy:
