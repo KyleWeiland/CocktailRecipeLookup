@@ -8,6 +8,7 @@ function CocktailSearch() {
     const [result, setResult] = useState(1);
     const [resultsCount, setResultsCount] = useState(null);
     const [data, setData] = useState(null);
+    const [checkboxVal, setCheckboxVal] = useState(false);
 
     const fetchCocktailDetails = async () => {
         try {
@@ -45,7 +46,10 @@ function CocktailSearch() {
                 onChange={e => setCocktailName(e.target.value)}
             />
             <button onClick={fetchCocktailDetails}>Search</button>
-
+            <div>
+                <label>Search by ingredient: </label>
+                <input type="checkbox" onChange={e => setCheckboxVal(e.target.value)}></input>
+            </div>
             <div>
                 {cocktailDetails && (
                     <div>
