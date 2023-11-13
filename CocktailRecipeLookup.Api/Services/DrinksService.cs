@@ -22,7 +22,7 @@ namespace CocktailRecipeLookup.Api.Services
             _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
             var response = await _httpClient.GetStringAsync($"https://api.api-ninjas.com/v1/cocktail?name={name}");
             var drinks = JsonConvert.DeserializeObject<List<Drink>>(response);
-            SanitizeResponse(drinks);//ConvertInstructions(drinks);
+            SanitizeResponse(drinks);
             return drinks;
         }
 
