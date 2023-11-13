@@ -35,7 +35,7 @@ function CocktailSearch() {
     }
 
     function handleInputKeyDown(key) {
-        if (key=='Enter') {
+        if (key==='Enter') {
             fetchCocktailDetails()
         }
     }
