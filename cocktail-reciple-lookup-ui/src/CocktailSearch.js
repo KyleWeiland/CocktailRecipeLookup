@@ -34,6 +34,10 @@ function CocktailSearch() {
         setResult((prevResult) => (prevResult === resultsCount ? 1 : prevResult + 1));
     }
 
+    function prevResult() {
+        setResult((prevResult) => (prevResult === 1 ? resultsCount : prevResult - 1));
+    }
+
     function handleInputKeyDown(key) {
         if (key==='Enter') {
             fetchCocktailDetails()
@@ -68,6 +72,7 @@ function CocktailSearch() {
                 {cocktailDetails && (
                     <div>
                         <h5>Result {result} of {resultsCount}</h5>
+                        <button onClick={prevResult}>Previous Drink</button>
                         <button onClick={nextResult}>Next Drink</button>
                         <h3>{cocktailDetails.name}</h3>
                         <p>Ingredients:</p>
