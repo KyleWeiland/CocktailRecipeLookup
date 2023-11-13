@@ -9,8 +9,11 @@ function CocktailSearch() {
     const [resultsCount, setResultsCount] = useState(null);
     const [data, setData] = useState(null);
     const [checkboxVal, setCheckboxVal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const fetchCocktailDetails = async () => {
+        setCocktailDetails(null);
+        setLoading(true);
         try {
             const _data = (checkboxVal) ? await getDrinksByIngredients(cocktailName) : await getDrinksByName(cocktailName);
             if (_data && _data.length > 0) {
@@ -24,13 +27,20 @@ function CocktailSearch() {
         } catch (error){
             console.error("There was an error fetching coktail details:", error);
         }
+        setLoading(false);
     }
 
     function nextResult() {
         setResult((prevResult) => (prevResult === resultsCount ? 1 : prevResult + 1));
     }
 
-    useEffect(() => {
+    function handleInputKeyDown(key) {
+        if (key=='Enter') {
+            fetchCocktailDetails()
+        }
+    }
+
+    useEffect(function displayCocktail() {
         if (data && data.length > 0) {
           setCocktailDetails(data[result - 1]);
         }
@@ -41,9 +51,10 @@ function CocktailSearch() {
             <h2>Cocktail Search</h2>
             <input
                 type="text"
-                placeholder="Enter cocktail name"
+                placeholder={"Enter cocktail " + (checkboxVal ? "ingredients" : "name")}
                 value={cocktailName}
                 onChange={e => setCocktailName(e.target.value)}
+                onKeyDown={e => handleInputKeyDown(e.key)}
             />
             <button onClick={fetchCocktailDetails}>Search</button>
             <div>
@@ -51,6 +62,9 @@ function CocktailSearch() {
                 <input type="checkbox" checked = {checkboxVal} onChange={() => setCheckboxVal(!checkboxVal)}></input>
             </div>
             <div>
+                {loading && (
+                    <h3>Loading...</h3>
+                )}
                 {cocktailDetails && (
                     <div>
                         <h5>Result {result} of {resultsCount}</h5>
