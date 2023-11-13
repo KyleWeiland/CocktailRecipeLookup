@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getDrinksByName } from './api/drinksApi'
+import { getDrinksByIngredients, getDrinksByName } from './api/drinksApi'
 
 
 function CocktailSearch() {
@@ -8,10 +8,11 @@ function CocktailSearch() {
     const [result, setResult] = useState(1);
     const [resultsCount, setResultsCount] = useState(null);
     const [data, setData] = useState(null);
+    const [checkboxVal, setCheckboxVal] = useState(false);
 
     const fetchCocktailDetails = async () => {
         try {
-            const _data = await getDrinksByName(cocktailName);
+            const _data = (checkboxVal) ? await getDrinksByIngredients(cocktailName) : await getDrinksByName(cocktailName);
             if (_data && _data.length > 0) {
                 setCocktailDetails(_data[0]);
                 setResultsCount(_data.length);
@@ -45,7 +46,10 @@ function CocktailSearch() {
                 onChange={e => setCocktailName(e.target.value)}
             />
             <button onClick={fetchCocktailDetails}>Search</button>
-
+            <div>
+                <label>Search by ingredients: </label>
+                <input type="checkbox" checked = {checkboxVal} onChange={() => setCheckboxVal(!checkboxVal)}></input>
+            </div>
             <div>
                 {cocktailDetails && (
                     <div>

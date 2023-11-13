@@ -16,3 +16,13 @@ export const getDrinksByName = async name => {
         throw error;
     }
 };
+
+export const getDrinksByIngredients = async _data => {
+    try {
+        const response = await drinksApi.post(`Drinks/ByIngredients`, [_data]);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching cocktail details:", error);
+        throw error;
+    }
+}
