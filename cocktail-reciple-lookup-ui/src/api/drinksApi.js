@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const drinksApi = axios.create({
-    baseURL: 'https://api.kyle-weiland.com/api/',
+    baseURL: 'https://localhost:7033/api/',//'https://api.kyle-weiland.com/api/',
     headers: {
         'Content-Type': 'application/json',
     }
@@ -16,3 +16,13 @@ export const getDrinksByName = async name => {
         throw error;
     }
 };
+
+export const getDrinksByIngredients = async _data => {
+    try {
+        const response = await drinksApi.post(`Drinks/ByIngredients`, [_data]);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching cocktail details:", error);
+        throw error;
+    }
+}
