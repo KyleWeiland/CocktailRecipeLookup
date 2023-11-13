@@ -3,6 +3,7 @@ using Amazon.SimpleSystemsManagement;
 using CocktailRecipeLookup.Api.Models;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace CocktailRecipeLookup.Api.Services
 {
@@ -21,7 +22,7 @@ namespace CocktailRecipeLookup.Api.Services
             _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
             var response = await _httpClient.GetStringAsync($"https://api.api-ninjas.com/v1/cocktail?name={name}");
             var drinks = JsonConvert.DeserializeObject<List<Drink>>(response);
-            ConvertInstructions(drinks);
+            SanitizeResponse(drinks);
             return drinks;
         }
 
@@ -48,10 +49,17 @@ namespace CocktailRecipeLookup.Api.Services
             return response.Parameter.Value;
         }
 
+        private void SanitizeResponse(List<Drink> drinks)
+        {
+            ConvertInstructions(drinks);
+            ConvertDrinkNamesToUpper(drinks);
+        }
+
         private void ConvertInstructions(List<Drink> drinks)
         {
-            // Skip if none of the ingredients have cl 
-            if (!drinks.Any(d => d.Ingredients.Any(i => i.Contains(" cl ")))) return;
+            // Skip if none of the ingredients have cl
+            var regexCheck = new Regex(@"\d+(\.\d+)?\s*[cC][lL]");
+            if (!drinks.Any(d => d.Ingredients.Any(i => regexCheck.IsMatch(i)))) return;
 
             foreach (var d in drinks)
             {
@@ -65,7 +73,7 @@ namespace CocktailRecipeLookup.Api.Services
         private string ConvertClToMl(string ingredient)
         {
             // Use regex to match the pattern of a number followed by "cl"
-            var regex = new Regex(@"(\d+(\.\d+)?)\s*cl");
+            var regex = new Regex(@"(\d+(\.\d+)?)\s*[cC][lL]");
 
             // Use MatchEvaluator to convert the matched value to ml
             return regex.Replace(ingredient, m =>
@@ -77,6 +85,15 @@ namespace CocktailRecipeLookup.Api.Services
                 // Return the converted value with "ml"
                 return $"{valueInMl} ml";
             });
+        }
+
+        private void ConvertDrinkNamesToUpper(List<Drink> drinks)
+        {
+            TextInfo textInfo = new CultureInfo("en-Us", false).TextInfo;
+            foreach (var d in drinks)
+            {
+                d.Name = textInfo.ToTitleCase(d.Name);
+            }
         }
     }
 }
