@@ -38,6 +38,7 @@ namespace CocktailRecipeLookup.Api.Services
             combined = combined.Substring(0, combined.Length - 1);
             var response = await _httpClient.GetStringAsync($"https://api.api-ninjas.com/v1/cocktail?ingredients={combined}");
             var drinks = JsonConvert.DeserializeObject<List<Drink>>(response);
+            SanitizeResponse(drinks);
             return drinks;
         }
 
