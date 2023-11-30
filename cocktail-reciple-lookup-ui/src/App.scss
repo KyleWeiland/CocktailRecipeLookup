@@ -1,97 +1,123 @@
-.centerContainer{
-  background-color: red;
+.centerContainer {
+  background-color: #f8f8f8;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  .navBar{
-    background-color: blue;
-    height: 10vh;
+  .navBar {
+    background-color: #2c3e50;
+    height: 8vh;
     width: 100vw;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    
-    > label{
-      border-style: outset;
+    border-bottom: 3px solid #34495e;
+
+    > label {
+      background-color: #ecf0f1;
       border-radius: 3px;
-      border-color: black;
+      padding: 5px 10px;
+      color: #2c3e50;
+      font-weight: bold;
     }
   }
 
-  .mainContent{
-    background-color: green;
-    height: 90vh;
+  .mainContent {
+    background-color: #ffffff;
+    height: 92vh;
     width: 70vw;
-    flex-direction: column;
     display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-    .searchContainer{
-      background-color: yellow;
-      flex: 1;
+    .searchContainer {
+      background-color: #ecf0f1;
+      padding: 20px;
+      border-bottom: 2px solid #bdc3c7;
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
       flex-direction: column;
 
-      > *{
-        margin: 0;
+      > * {
+        margin: 5px 0;
       }
     }
 
-    .drinkContainer{
-      background-color: yellowgreen;
-      flex: 4;
+    .drinkContainer {
+      background-color: #bdc3c7;
+      padding: 1%;
       display: flex;
       flex-direction: row;
+      flex-grow: 1;
 
-      .loadingContainer{
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .previousArrow{
-        background-color: aqua;
+      .loadingContainer {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      .drinkContainerMain{
-        background-color: green;
-        flex: 8;
+      .previousArrow, .nextArrow {
+        background-color: #95a5a6;
+        flex-basis: 50px;
+        display: flex;
+        justify-content: center;
+        border-radius: 3px;
+        flex: 1;
+        flex-grow: 1;
+
+        
+        > button{
+          background-color: transparent;
+          border-color: transparent;
+          color: #ffffff;
+          font-size: 20px;
+          flex: 1;
+          cursor: pointer;          
+        }
+      }
+
+      .drinkContainerMain {
+        flex-grow: 1;
+        margin: 0 10px;
         display: flex;
         flex-direction: column;
-        padding: 1%;
+        flex: 18;
         
-        .drinkName, .results{
+        .drinkName, .results {
+          color: #2c3e50;
+          font-weight: bold;
+          margin-bottom: 10px;
           display: flex;
           justify-content: center;
         }
 
-        .results{
+        .ingredients, .directions {
+          background-color: #ecf0f1;
+          padding: 10px;
+          border-radius: 5px;
+          margin: 10px 0;
+        }
+
+        .results {
           flex-grow: 1;
           align-items: end;
+          margin: 0;
         }
-      }
-
-      .nextArrow{
-        background-color: fuchsia;
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
       }
     }
 
-    .footer{
-      background-color: orange;
-      flex: 1;
+    .footer {
+      background-color: #34495e;
+      color: #ffffff;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
       display: flex;
-      justify-content: center;
+      min-height: 2vh;
+      //flex: 1;
     }
   }
 }
