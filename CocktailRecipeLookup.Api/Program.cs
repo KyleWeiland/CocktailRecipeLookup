@@ -6,7 +6,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("https://kyle-weiland.com")
+        builder.WithOrigins("https://kyle-weiland.com", "http://localhost:3000")
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
