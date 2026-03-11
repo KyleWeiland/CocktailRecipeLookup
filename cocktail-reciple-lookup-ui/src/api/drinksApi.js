@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const drinksApi = axios.create({
     //baseURL: 'https://localhost:7033/api/', 
-    baseURL: 'https://api.kyle-weiland.com/api/',
+    // baseURL: 'https://api.kyle-weiland.com/api/',
+    baseURL: 'https://p7d8ipi548.execute-api.us-east-1.amazonaws.com/prod/api/',
     headers: {
         'Content-Type': 'application/json',
     }
