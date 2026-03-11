@@ -1,4 +1,4 @@
-name: Deploy .NET to Elastic Beanstalk
+name: Deploy Lambda Function
 
 on:
   workflow_dispatch:
@@ -6,44 +6,41 @@ on:
     branches:
       - main
     paths:
-      - 'CocktailRecipeLookup.Api/**'
+      - 'CocktailRecipeLookup.Lambda/**'
       - '.github/workflows/backend-build-deploy.yml'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-    
+      uses: actions/checkout@v3
+
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0' # Set to your .NET version
-    
-    - name: Restore dependencies
-      run: dotnet restore
-    
-    - name: Build
-      run: dotnet build --configuration Release
-    
-    - name: Publish
-      run: dotnet publish -c Release -o ./publish
+        dotnet-version: '8.0'
 
-    - name: Install Zip
-      run: sudo apt-get install zip
+    - name: Install Lambda Tools
+      run: dotnet tool install -g Amazon.Lambda.Tools
 
-    - name: Zip the application
-      run: zip -r publish.zip -j ./publish/*
+    - name: Build and Package Lambda
+      working-directory: ./CocktailRecipeLookup.Lambda
+      run: |
+        dotnet build --configuration Release
+        dotnet lambda package -o function.zip
 
-    - name: Deploy to Elastic Beanstalk
-      uses: einaregilsson/beanstalk-deploy@v18
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
       with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        region: us-east-1 # Set to your AWS region
-        application_name: my-dotnet-app
-        environment_name: My-dotnet-app-env
-        version_label: ${{ github.run_id }}
-        deployment_package: publish.zip
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Deploy to Lambda
+      working-directory: ./CocktailRecipeLookup.Lambda
+      run: |
+        aws lambda update-function-code \
+          --function-name CocktailRecipeApi \
+          --zip-file fileb://function.zip
